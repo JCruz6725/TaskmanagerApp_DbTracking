@@ -160,10 +160,6 @@ GO
 
 
 /*Hash and move password data from Users into Password*/
-IF (OBJECT_ID('HashPassword') IS NOT NULL)
-	DROP PROCEDURE HashPassword
-GO
-
 CREATE PROC dbo.HashPassword
     @PlainPassword VARCHAR(100),
 	@UserId UNIQUEIDENTIFIER
