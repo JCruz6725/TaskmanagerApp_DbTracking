@@ -160,7 +160,7 @@ GO
 
 
 /*Hash and move password data from Users into Password*/
-CREATE PROC dbo.HashPassword
+CREATE PROC [dbo].[HashPassword]
     @PlainPassword VARCHAR(100),
 	@UserId UNIQUEIDENTIFIER
 AS
