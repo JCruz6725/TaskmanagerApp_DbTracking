@@ -7,6 +7,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+BEGIN TRANSACTION;
 
 /****** Create LicenseTypes table with relationships ******/
 CREATE TABLE [dbo].[LicenseTypes](
@@ -201,3 +202,5 @@ exec sp_executesql @hashQuery
 
 /*drop password from User*/
 ALTER TABLE Users DROP COLUMN Password;
+
+COMMIT TRANSACTION;
