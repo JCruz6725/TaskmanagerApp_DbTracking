@@ -6,3 +6,9 @@ delete from Lists
 delete from TaskItems
 delete from Statuses
 delete from Users
+delete from Password
+delete from DeviceData
+delete from Profile
+delete from Address
+delete from PurposeTypes
+delete from LicenseTypes
