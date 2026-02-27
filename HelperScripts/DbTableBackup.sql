@@ -80,6 +80,56 @@ ALTER DATABASE [TaskManagerApp] SET QUERY_STORE = OFF
 GO
 USE [TaskManagerApp]
 GO
+/** Address Table 02/24/26 **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Address](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Address] [varchar](64) NOT NULL,
+	[City] [varchar](64) NOT NULL,
+	[State] [varchar](64) NOT NULL,
+	[Zipcode] [varchar](64) NOT NULL,
+	[CreatedUserId] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_Address] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[DeviceData]    Script Date: 2/24/2026 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DeviceData](
+	[Id] [uniqueidentifier] NOT NULL,
+	[IpAdress] [varchar](64) NOT NULL,
+	[BrowserType] [varchar](64) NOT NULL,
+	[AccessTime] [int] NOT NULL,
+	[AccessCount] [int] NOT NULL,
+	[CreatedUserId] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_DeviceData] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[LicenseTypes]    Script Date: 2/24/2026  ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[LicenseTypes](
+	[Id] [uniqueidentifier] NOT NULL,
+	[LicenseTitle] [varchar](64) NOT NULL,
+ CONSTRAINT [PK_LicenseTypes] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Lists]    Script Date: 10/2/2025 1:32:14 AM ******/
 SET ANSI_NULLS ON
 GO
@@ -91,6 +141,59 @@ CREATE TABLE [dbo].[Lists](
 	[CreatedDate] [smalldatetime] NOT NULL,
 	[CreatedUserId] [uniqueidentifier] NOT NULL,
  CONSTRAINT [PK_Lists] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Password]    Script Date: 2/24/2026  ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Password](
+	[Id] [uniqueidentifier] NOT NULL,
+	[PasswordHash] [varbinary](64) NOT NULL,
+	[Salt] [varbinary](64) NOT NULL,
+	[CreatedDate] [smalldatetime] NOT NULL,
+	[CreatedUserId] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_Password] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Profile]    Script Date: 2/24/2026  ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Profile](
+	[Id] [uniqueidentifier] NOT NULL,
+	[DateOfBirth] [date] NOT NULL,
+	[PhoneNumber] [varchar](64) NOT NULL,
+	[Gender] [varchar](64) NOT NULL,
+	[Education] [varchar](64) NOT NULL,
+	[Employer] [varchar](64) NOT NULL,
+	[JobTitle] [varchar](64) NOT NULL,
+	[PurposeId] [uniqueidentifier] NOT NULL,
+	[LicenseId] [uniqueidentifier] NOT NULL,
+	[CreatedUserId] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_Profile] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PurposeTypes]    Script Date: 2/24/2026  ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PurposeTypes](
+	[Id] [uniqueidentifier] NOT NULL,
+	[PurposeTitle] [varchar](64) NOT NULL,
+ CONSTRAINT [PK_PurposeTypes] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -208,7 +311,7 @@ CREATE TABLE [dbo].[Users](
 	[FirstName] [varchar](64) NOT NULL,
 	[LastName] [varchar](64) NOT NULL,
 	[Email] [varchar](128) NOT NULL,
-	[Password] [varchar](64) NOT NULL,
+	/* [Password] [varchar](64) NOT NULL, */
  CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -293,6 +396,48 @@ ALTER TABLE [dbo].[TaskWithinList]  WITH CHECK ADD  CONSTRAINT [FK_TaskWithinLis
 REFERENCES [dbo].[Users] ([Id])
 GO
 ALTER TABLE [dbo].[TaskWithinList] CHECK CONSTRAINT [FK_TaskWithinList_Users]
+GO
+ALTER TABLE [dbo].[Address] ADD  CONSTRAINT [DF_Address_Id]  DEFAULT (newid()) FOR [Id]
+GO
+ALTER TABLE [dbo].[Address]  WITH CHECK ADD  CONSTRAINT [FK_Address_Users] FOREIGN KEY([CreatedUserId])
+REFERENCES [dbo].[Users] ([Id])
+GO
+ALTER TABLE [dbo].[Address] CHECK CONSTRAINT [FK_Address_Users]
+GO
+ALTER TABLE [dbo].[DeviceData] ADD  CONSTRAINT [DF_DeviceData_Id]  DEFAULT (newid()) FOR [Id]
+GO
+ALTER TABLE [dbo].[DeviceData]  WITH CHECK ADD  CONSTRAINT [FK_DeviceData_Users] FOREIGN KEY([CreatedUserId])
+REFERENCES [dbo].[Users] ([Id])
+GO
+ALTER TABLE [dbo].[DeviceData] CHECK CONSTRAINT [FK_DeviceData_Users]
+GO
+ALTER TABLE [dbo].[LicenseTypes] ADD  CONSTRAINT [DF_LicenseTypes_Id]  DEFAULT (newid()) FOR [Id]
+GO
+ALTER TABLE [dbo].[Password] ADD  CONSTRAINT [DF_Password_Id]  DEFAULT (newid()) FOR [Id]
+GO
+ALTER TABLE [dbo].[Password]  WITH CHECK ADD  CONSTRAINT [FK_Password_Users] FOREIGN KEY([CreatedUserId])
+REFERENCES [dbo].[Users] ([Id])
+GO
+ALTER TABLE [dbo].[Password] CHECK CONSTRAINT [FK_Password_Users]
+GO
+ALTER TABLE [dbo].[Profile] ADD  CONSTRAINT [DF_Profile_Id]  DEFAULT (newid()) FOR [Id]
+GO
+ALTER TABLE [dbo].[Profile]  WITH CHECK ADD  CONSTRAINT [FK_Profile_PurposeTypes] FOREIGN KEY([PurposeId])
+REFERENCES [dbo].[PurposeTypes] ([Id])
+GO
+ALTER TABLE [dbo].[Profile] CHECK CONSTRAINT [FK_Profile_PurposeTypes]
+GO
+ALTER TABLE [dbo].[Profile]  WITH CHECK ADD  CONSTRAINT [FK_Profile_LicenseTypes] FOREIGN KEY([LicenseId])
+REFERENCES [dbo].[LicenseTypes] ([Id])
+GO
+ALTER TABLE [dbo].[Profile] CHECK CONSTRAINT [FK_Profile_LicenseTypes]
+GO
+ALTER TABLE [dbo].[Profile]  WITH CHECK ADD  CONSTRAINT [FK_Profile_Users] FOREIGN KEY([CreatedUserId])
+REFERENCES [dbo].[Users] ([Id])
+GO
+ALTER TABLE [dbo].[Profile] CHECK CONSTRAINT [FK_Profile_Users]
+GO
+ALTER TABLE [dbo].[PurposeTypes] ADD  CONSTRAINT [DF_PurposeTypes_Id]  DEFAULT (newid()) FOR [Id]
 GO
 USE [master]
 GO
