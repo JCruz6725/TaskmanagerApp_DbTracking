@@ -143,31 +143,29 @@ BEGIN TRY
 		AS
 		BEGIN
 			SET NOCOUNT ON;
-			DECLARE @Salt VARCHAR(25);
+			DECLARE @Salt VARCHAR(25) = '''';
 			DECLARE @PwdWithSalt VARCHAR(125);
-			-- Generate salt --
-			DECLARE @LCV tinyint;
-			DECLARE @i int = 0; 
-				SET @LCV = 12;
-			WHILE (32 > @i or @i > 126)
-			BEGIN 
-				SET @i = ROUND((RAND() * 100) +32,0)
-		END; 
-				SET @Salt = CHAR(@i);
-			WHILE (@LCV < 25)
+
+			DECLARE @Counter INT = 0;
+			Declare @SaltSize INT = 25;
+
+			WHILE (@Counter < @SaltSize)
 			BEGIN
-				SET @i = 0;
-			WHILE (32 > @i or @i > 126)
-			BEGIN 
-			SET @i = ROUND((RAND() * 100) +32,0)
-		END;
-		/* Salt must be between 32 and 126 in the ASCII table to avoid issues with hashing and storage */
-		/* Salt is a total of 15 characters /*
-				SET @Salt = @Salt + CHAR(@i)
-				SET @LCV = @LCV + 1;
-		END;
-				SET @PwdWithSalt = @Salt + @PlainPassword;
-			PRINT HASHBYTES(''SHA2_256'', @PwdWithSalt);
+
+				DECLARE @i int = 0; 
+				WHILE (32 > @i or @i > 126)
+				BEGIN 
+					SET @i = ROUND((RAND() * 100) +32,0)
+				END;
+
+				/* Salt must be between 32 and 126 in the ASCII table to avoid issues with hashing and storage */
+				/* Salt is a total of 15 characters */
+
+				SET @Salt = @Salt + CHAR(@i);
+				SET @Counter = @Counter + 1;
+			END;
+			SET @PwdWithSalt = @Salt + @PlainPassword;
+			--PRINT HASHBYTES(''SHA2_256'', @PwdWithSalt);
 			INSERT INTO dbo.Password(Salt, PasswordHash, CreatedDate, CreatedUserId)
 			VALUES (@Salt, HASHBYTES(''SHA2_256'', @PwdWithSalt), GETDATE(), @UserId);
 		END';
@@ -185,7 +183,7 @@ BEGIN TRY
 		/*drop password from User*/
 		ALTER TABLE Users DROP COLUMN Password;
 
-	COMMIT TRANSACTION;
+		COMMIT TRANSACTION;
 
 END TRY
 
@@ -194,4 +192,3 @@ BEGIN CATCH
 		ROLLBACK TRANSACTION;
 		THROW;
 END CATCH
-
