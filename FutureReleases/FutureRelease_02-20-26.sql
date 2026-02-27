@@ -185,9 +185,7 @@ BEGIN TRY
 		/*drop password from User*/
 		ALTER TABLE Users DROP COLUMN Password;
 
-		select * From Password
-
-	rollback TRANSACTION;
+	COMMIT TRANSACTION;
 
 END TRY
 
