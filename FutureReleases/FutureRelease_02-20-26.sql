@@ -96,7 +96,7 @@ BEGIN TRY
 		/****** Create DeviceData table with relationships ******/
 		CREATE TABLE [dbo].[DeviceData](
 			[Id] [uniqueidentifier] NOT NULL,
-			[IpAdress] [varchar](64) NOT NULL,
+			[IpAddress] [varchar](64) NOT NULL,
 			[BrowserType] [varchar](64) NOT NULL,
 			[AccessTime] [int] NOT NULL,
 			[AccessCount] [int] NOT NULL,
