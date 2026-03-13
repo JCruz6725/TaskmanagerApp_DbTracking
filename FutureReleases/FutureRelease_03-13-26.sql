@@ -1,0 +1,26 @@
+USE [TaskManagerApp]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+BEGIN TRY
+	BEGIN TRANSACTION;
+        /*Fix AccessTime datatype*/
+        ALTER TABLE DeviceData
+        ALTER COLUMN AccessTime DateTime NOT NULL;
+
+        ALTER TABLE DeviceData
+        DROP COLUMN AccessCount;
+    COMMIT TRANSACTION;
+
+END TRY
+
+BEGIN CATCH
+	IF @@TRANCOUNT > 0
+		ROLLBACK TRANSACTION;
+		THROW;
+END CATCH
