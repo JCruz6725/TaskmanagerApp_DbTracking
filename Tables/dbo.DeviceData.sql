@@ -12,8 +12,7 @@ CREATE TABLE [dbo].[DeviceData](
 	[Id] [uniqueidentifier] NOT NULL,
 	[IpAddress] [varchar](64) NOT NULL,
 	[BrowserType] [varchar](64) NOT NULL,
-	[AccessTime] [int] NOT NULL,
-	[AccessCount] [int] NOT NULL,
+	[AccessTime] [smalldatetime] NOT NULL,
 	[CreatedUserId] [uniqueidentifier] NOT NULL,
  CONSTRAINT [PK_DeviceData] PRIMARY KEY CLUSTERED 
 (
